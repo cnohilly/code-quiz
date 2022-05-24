@@ -2,7 +2,6 @@ var pageContentEl = document.querySelector("#page-content");
 var timeEl = document.querySelector('#time');
 var headerEl = document.querySelector('header');
 headerEl.style.display = 'flex';
-
 var timer = 0; 
 
 // Creating the questions for the quiz
@@ -15,9 +14,16 @@ var addNewQuestion = function(jsQuestion,answersArr,answerNum){
        answerId: answerNum
    });
 };
-addNewQuestion("Commonly used data types DO NOT include:",["strings","booleans","alerts","nubmers"],2);
-addNewQuestion("The condition in an if / else statement is enclosed with _____.",["quotes","curly brackets","paranthesis","square brackets"],1);
+addNewQuestion("Commonly used data types DO NOT include:",["strings","booleans","alerts","numbers"],2);
+addNewQuestion("The condition in an if / else statement is enclosed with _____.",["quotes","curly brackets","parenthesis","square brackets"],2);
+addNewQuestion("Arrays in JavaScript can be used to store _____.",["numbers and strings","other arrays","booleans","all of the above"],3);
+addNewQuestion("A very useful tool used during development and debugging for printing content to the debugger is:",["JavaScript","terminal/bash","for loops","console.log"],3);
 
+var highscores = [];
+var newHighscore = function(init,score){
+    var highscore = {
+    }
+}
 
 var createStartQuizScreen = function(){
     pageContentEl.innerHTML = '';
@@ -80,15 +86,33 @@ var startQuiz = function(){
     nextQuestion();
 };
 
+// Declaring footerTimeout to be used within the answerQuestion function
+var footerTimeout;
+// Called when selecting an answer
 var answerQuestion = function(event){
     console.log("hello");
+    var result = "";
     var answerId = event.target.getAttribute("data-answer-id");
     if (answerId != jsQuestions[currentQuestion].answerId){
+        result = "Wrong!";
         wrongAnswer();
+    } else {
+        result = "Correct!";
     }
+    document.querySelector('#question-result').textContent = result;
+    var footerEl = document.querySelector('footer');
+    footerEl.style.display = 'block';
+    clearTimeout(footerTimeout);
+    footerTimeout = setTimeout(function(){
+        footerEl.style.display = "none";
+    },2000);
     currentQuestion++;
     nextQuestion();
 };
+
+var hideFooter = function(){
+    document.querySelector('footer').style.display = "none";
+}
 
 var wrongAnswer = function(){
     timer = timer - 10;
@@ -145,6 +169,12 @@ var endQuiz = function(){
     pageContentEl.appendChild(divEl);
 };
 
+var createHighscoreScreen = function(){
+    headerToggle();
+    pageContentEl.innerHTML = '';
+
+}
+
 var headerToggle = function(){
     if(headerEl.style.display === "flex"){
         headerEl.style.display = 'none';
@@ -153,6 +183,6 @@ var headerToggle = function(){
     }
 };
 
-document.querySelector('#highscore-button').addEventListener("click",headerToggle);
+document.querySelector('#highscore-button').addEventListener("click",createHighscoreScreen);
 
 createStartQuizScreen();
