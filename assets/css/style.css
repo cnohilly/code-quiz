@@ -11,6 +11,7 @@
     font-size: 62.5%;
 }
 
+/* Body Styling */
 body {
     background: var(--background-color);
     color: var(--grey);
@@ -23,6 +24,7 @@ body {
     align-items: center;
 }
 
+/* Header Styling */
 header {
     width: 80%;
     font-size: 20px;
@@ -37,22 +39,29 @@ header div.timer {
     justify-content: space-between;
 }
 
+/* General Main Styling */
 main {
     font-size: 2rem;
-    width: 80%;
+    width: 70%;
 }
 
 main h2 {
     font-size: 36px;
+}
+main #title-heading {
     text-align: center;
 }
 
+/* Styling for Start Quiz screen */
 #test-begin {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    gap: 10px;
 }
 
+/* General Button Styling */
 button {
     outline: none;
     border: none;
@@ -76,3 +85,61 @@ button {
     top: 0;
   }
 
+/* Answers Styling */
+#answers-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    margin-left: 50px;
+}
+#answers-list li {
+    padding: 5px;
+}
+#answers-list button {
+    text-align: left;
+    width: 100%;
+}
+
+/* Quiz End Styling */
+#quiz-end {
+    display:flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#quiz-end span, #quiz-end input {
+    margin: auto 0;
+    padding: 15px 5px;
+}
+
+@media screen and (max-width: 980px) {
+
+    button {
+        font-size: 2rem;
+    }
+
+    main {
+        width: auto;
+        margin: 20px;
+    }
+    main h2 {
+        font-size: 28px;
+    }
+
+    #answers-list {
+        margin-left: -25px;
+    }
+
+    #quiz-end {
+        justify-content: space-between;
+    }
+    #quiz-end button {
+      width: 100%;
+    }
+    #quiz-end span, #quiz-end input {
+        width: 45%;
+    }
+  
+  }
+  
