@@ -4,9 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Code Quiz</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 <body>
-    
+    <header>
+        <button id="highscore-button">Highscores</button>
+        <div class="timer">
+            <span>Timer:</span>
+            <span id="time">0</span>
+        </div>
+    </header>    
+    <main class="page-content" id="page-content">
+        <h2 id="question-heading">This is a question title or to start the game</h2>
+        <div id="test-begin">
+            <p>Try to answer the following code-related questions within the time limit.</p>    
+            <p>Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+            <button id="start-button">Start Quiz</button>
+        </div>
+    </main>
+    <footer>
+
+    </footer>
+
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
