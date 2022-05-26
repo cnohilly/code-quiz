@@ -2,6 +2,7 @@ var pageContentEl = document.querySelector("#page-content");
 var timeEl = document.querySelector('#time');
 var headerEl = document.querySelector('header');
 headerEl.style.display = 'flex';
+var footerEl = document.querySelector('footer');
 var timer = 0;  // timer variable used to keep track of the time for the game
 var highscores = [];    // highscores array to store all of the highscores
 
@@ -51,18 +52,30 @@ var sortHighscores = function(){
     }
 }
 
-var createElement = function(elementType,elementId,elementClasses,elementAttributes){
+// function to create an element and assign the desired information
+// uses string for type and id and an array for classes and attributes
+var createElement = function(elementType,elementText,elementId,elementClasses,elementAttributes){
+    console.log(elementType + ' ' + elementId + ' ' + elementClasses + ' ' + elementAttributes);
+    //creates the new element using the provided type
     var newElement = document.createElement(elementType);
+    // if text is passed through it will be assigned to the element
+    if (elementText){
+        newElement.textContent = elementText;
+    }
+    // if an id is provided, will assign the id
     if (elementId){
         newElement.setAttribute('id',elementId);
     }
-    if (elementClasses){
+    // if an array of classes is provided, will add the classes to the element
+    if (elementClasses && typeof elementClasses === 'object'){
         for(var i = 0; i < elementClasses.length; i++){
             newElement.className += " " + elementClasses[i];
         }
     }
-    if (elementAttributes){
+    // if an array of attributes is provided, will add attributes to the element
+    if (elementAttributes && typeof elementAttributes === 'object'){
         for(var i = 0; i < elementAttributes.length - 1; i+=2){
+            // the first index is the attribute name, the second is the attribute value
             newElement.setAttribute(elementAttributes[i],elementAttributes[i+1]);
         }
     }
@@ -82,25 +95,18 @@ var createStartQuizScreen = function(){
     // clears the content currently on the page
     pageContentEl.innerHTML = '';
     // creates a header for the title
-    var headerEl = document.createElement('h2');
-    headerEl.setAttribute('id','title-heading');
-    headerEl.textContent = "Coding Quiz Game";
-    pageContentEl.appendChild(headerEl);
+    var headingEl = createElement('h2',"Coding Quiz Game",'title-heading');
+    pageContentEl.appendChild(headingEl);
 
     // creates a div element and paragraph elements to explain the quiz game
-    var divEl = document.createElement('div');
-    divEl.setAttribute('id','test-begin');
-    var pEl = document.createElement('p');
-    pEl.textContent = "Try to answer the following code-related questions within the time limit.";
+    var divEl = createElement('div',false,'test-begin');
+    var pEl = createElement('p',"Try to answer the following code-related questions within the time limit.");
     divEl.appendChild(pEl);
-    pEl = document.createElement('p');
-    pEl.textContent = "Keep in mind that incorrect answers will penalize your score/time by ten seconds!";
+    pEl = createElement('p',"Keep in mind that incorrect answers will penalize your score/time by ten seconds!");
     divEl.appendChild(pEl);
 
     // creates the button to start the quiz game
-    var btnEl = document.createElement('button');
-    btnEl.setAttribute('id','start-button')
-    btnEl.textContent = "Start Quiz";
+    var btnEl = createElement('button',"Start Quiz",'start-button');
     divEl.appendChild(btnEl);
     pageContentEl.appendChild(divEl);
     // adds an event listener to the start button
@@ -128,18 +134,15 @@ var startQuiz = function(){
     // clears the content currently on the page
     pageContentEl.innerHTML = '';
     // creates a header element that will be used to display questions
-    var headerEl = document.createElement('h2');
-    headerEl.setAttribute('id','question-heading');
-    pageContentEl.appendChild(headerEl);
+    var headingEl = createElement('h2',false,'question-heading');
+    pageContentEl.appendChild(headingEl);
 
     // creates an unordered list element and several list item elements with buttons for the question answers
-    var answersEl = document.createElement('ul');
-    answersEl.setAttribute('id','answers-list');
+    var answersEl = createElement('ul',false,'answers-list');
     var answerListEl, buttonEl;
     for(var i = 0; i < 4; i++){
-        answerListEl = document.createElement('li');
-        buttonEl = document.createElement('button');
-        buttonEl.setAttribute('data-answer-id',i);
+        answerListEl = createElement('li');
+        buttonEl = createElement('button',false,false,false,['data-answer-id',i]);
         buttonEl.addEventListener('click',answerQuestion);
         answerListEl.appendChild(buttonEl);
         answersEl.appendChild(answerListEl);
@@ -152,7 +155,6 @@ var startQuiz = function(){
 var footerTimeout;
 // Called when selecting an answer
 var answerQuestion = function(event){
-    console.log("hello");
     var result = "";
     var answerId = event.target.getAttribute("data-answer-id");
     if (answerId != jsQuestions[currentQuestion].answerId){
@@ -162,7 +164,6 @@ var answerQuestion = function(event){
         result = "Correct!";
     }
     document.querySelector('#question-result').textContent = result;
-    var footerEl = document.querySelector('footer');
     footerEl.style.display = 'block';
     clearTimeout(footerTimeout);
     footerTimeout = setTimeout(function(){
@@ -203,30 +204,17 @@ var startTimer = function () {
 
 var endQuiz = function(){
     pageContentEl.innerHTML = '';
-    
-    var headingEl = document.createElement('h2');
-    headingEl.setAttribute('id','quiz-end-heading');
-    headingEl.textContent = "All done!";
+    var headingEl = createElement('h2',"All done!",'quiz-end-heading');
     pageContentEl.appendChild(headingEl);
-    var pEl = document.createElement('p');
-    pEl.textContent = "Your final score is " + timer + ".";
+    var pEl = createElement('p',"Your final score is " + timer + ".");
     pageContentEl.appendChild(pEl);
 
-    var divEl = document.createElement('div');
-    divEl.setAttribute('id','quiz-end');
-    var spanEl = document.createElement('span');
-    spanEl.textContent = "Enter initials:";
+    var divEl = createElement('div',false,'quiz-end');
+    var spanEl = createElement('span',"Enter initials:");
     divEl.appendChild(spanEl);
-    var inputEl = document.createElement('input');
-    inputEl.setAttribute('type','text');
-    inputEl.setAttribute('name','initials');
-    inputEl.setAttribute('placeholder','Initials');
-    inputEl.setAttribute('maxlength','3');
+    var inputEl = createElement('input',false,false,false,['type','text','name','initials','placeholder','Initials','maxlength','3']);
     divEl.appendChild(inputEl);
-    var buttonEl = document.createElement('button');
-    buttonEl.setAttribute('id','save-score');
-    buttonEl.setAttribute('type','submit');
-    buttonEl.textContent = "Submit";
+    var buttonEl = createElement('button',"Submit",'save-score',false,['type','submit']);
     divEl.appendChild(buttonEl);
     pageContentEl.appendChild(divEl);
 };
@@ -235,7 +223,20 @@ var createHighscoreScreen = function(){
     headerToggle();
     pageContentEl.innerHTML = '';
 
-}
+};
+
+var saveHighscores = function(){
+    localStorage.setItem("code-quiz-highscores",JSON.stringify(highscores));
+};
+
+var loadHighscores = function(){
+    highscores = localStorage.getItem("code-quiz-highscores");
+    if(!highscores){
+        highscores = [];
+    } else {
+        highscores = JSON.parse(highscores);
+    }
+};
 
 var headerToggle = function(){
     if(headerEl.style.display === "flex"){
@@ -247,4 +248,4 @@ var headerToggle = function(){
 
 document.querySelector('#highscore-button').addEventListener("click",createHighscoreScreen);
 
-//createStartQuizScreen();
+createStartQuizScreen();

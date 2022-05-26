@@ -137,7 +137,6 @@ footer p {
     border: 2px solid black;
     padding: 0;
 }
-
 #highscore-list li:nth-child(odd){
     background-color:#00eeff;
 }
