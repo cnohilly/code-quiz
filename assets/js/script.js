@@ -29,6 +29,7 @@ var newHighscore = function(name,points){
     };
     highscores.push(highscore);
     sortHighscores();
+    saveHighscores();
 }
 
 // function to sort the highscores by highest score
@@ -54,7 +55,6 @@ var sortHighscores = function(){
 // function to create an element and assign the desired information
 // uses string for type and id and an array for classes and attributes
 var createElement = function(elementType,elementText,elementId,elementClasses,elementAttributes){
-    console.log(elementType + ' ' + elementId + ' ' + elementClasses + ' ' + elementAttributes);
     //creates the new element using the provided type
     var newElement = document.createElement(elementType);
     // if text is passed through it will be assigned to the element
@@ -80,14 +80,6 @@ var createElement = function(elementType,elementText,elementId,elementClasses,el
     }
     return newElement;
 };
-
-console.log(highscores);
-newHighscore("ctn",22);
-console.log(highscores);
-newHighscore("tst",21);
-console.log(highscores);
-newHighscore("tes",32);
-console.log(highscores);
 
 // creates the opening screen to start the quiz game
 var createStartQuizScreen = function(){
@@ -122,7 +114,6 @@ var nextQuestion = function(){
            document.querySelector("button[data-answer-id='" + i + "']").textContent = (i+1) + ". " + jsQuestions[currentQuestion].answers[i];
         }
     } else {
-        console.log("Quiz is over!");
         clearInterval(startCountdown);
         endQuiz();
     }
@@ -132,6 +123,7 @@ var nextQuestion = function(){
 var startQuiz = function(){
     // starts the timer for the game
     startTimer();
+    currentQuestion = 0;
     // clears the content currently on the page
     pageContentEl.innerHTML = '';
     // creates a header element that will be used to display questions
@@ -174,10 +166,6 @@ var answerQuestion = function(event){
     nextQuestion();
 };
 
-var hideFooter = function(){
-    document.querySelector('footer').style.display = "none";
-}
-
 var wrongAnswer = function(){
     timer = timer - 10;
     if (timer <= 0){
@@ -210,14 +198,22 @@ var endQuiz = function(){
     var pEl = createElement('p',"Your final score is " + timer + ".");
     pageContentEl.appendChild(pEl);
 
-    var divEl = createElement('div',false,'quiz-end');
+    var formEl = createElement('form',false,'quiz-end');
     var spanEl = createElement('span',"Enter initials:");
-    divEl.appendChild(spanEl);
+    formEl.appendChild(spanEl);
     var inputEl = createElement('input',false,false,false,['type','text','name','initials','placeholder','Initials','maxlength','3']);
-    divEl.appendChild(inputEl);
+    formEl.appendChild(inputEl);
     var buttonEl = createElement('button',"Submit",'save-score',false,['type','submit']);
-    divEl.appendChild(buttonEl);
-    pageContentEl.appendChild(divEl);
+    formEl.appendChild(buttonEl);
+    formEl.addEventListener('submit',submitScore);
+    pageContentEl.appendChild(formEl);
+};
+
+var submitScore = function(event){
+    event.preventDefault();
+    var playerInitials = document.querySelector("input[name='initials']").value;
+    newHighscore(playerInitials,timer);
+    createHighscoreScreen();
 };
 
 var createHighscoreScreen = function(){
@@ -227,6 +223,7 @@ var createHighscoreScreen = function(){
     var headingEl = createElement('h2','High scores','highscore-header');
     pageContentEl.appendChild(headingEl);
     var unorderedEl,liEl,spanEl,pEl;
+    // if there are any highscores saved
     if(highscores.length > 0){
         unorderedEl = createElement('ul',false,'highscore-list');
         liEl = createElement('li','Initials');
@@ -240,7 +237,7 @@ var createHighscoreScreen = function(){
             unorderedEl.appendChild(liEl);
         }
         pageContentEl.appendChild(unorderedEl); 
-    } else {
+    } else { // informs there are no highscores if none are saved
         pEl = createElement('p','There are currently no highscores.');
         pageContentEl.appendChild(pEl);
     }
@@ -249,9 +246,11 @@ var createHighscoreScreen = function(){
     buttonEl.addEventListener('click',createStartQuizScreen);
     divEl.appendChild(buttonEl);
     buttonEl = createElement('button','Clear Highscores','clear-highscores');
+    // creates button for clearing highscores and remakes the screen
     buttonEl.addEventListener('click',function(){
         highscores = [];
         createHighscoreScreen();
+        saveHighscores();
     });
     divEl.appendChild(buttonEl);
     pageContentEl.appendChild(divEl);
@@ -272,5 +271,5 @@ var loadHighscores = function(){
 
 document.querySelector('#highscore-button').addEventListener("click",createHighscoreScreen);
 
-//createStartQuizScreen();
-// createHighscoreScreen();
+loadHighscores();
+createStartQuizScreen();
