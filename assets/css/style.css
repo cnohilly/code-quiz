@@ -115,6 +115,7 @@ button {
     padding: 15px 5px;
 }
 
+/* Footer styling - displays answer result */
 footer { 
     margin-top: 10px;
     display: none;
@@ -130,6 +131,20 @@ footer p {
     font-style: italic;
 }
 
+/* Highscore Styling */
+#highscore-list {
+    list-style: none;
+    border: 2px solid black;
+    padding: 0;
+}
+
+#highscore-list li:nth-child(odd){
+    background-color:#00eeff;
+}
+
+#highscore-list li:nth-child(even){
+    background-color:#00aaff;
+}
 
 @media screen and (max-width: 768px) {
 
