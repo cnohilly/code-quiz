@@ -1,7 +1,6 @@
 var pageContentEl = document.querySelector("#page-content");
 var timeEl = document.querySelector('#time');
 var headerEl = document.querySelector('header');
-headerEl.style.display = 'flex';
 var footerEl = document.querySelector('footer');
 var timer = 0;  // timer variable used to keep track of the time for the game
 var highscores = [];    // highscores array to store all of the highscores
@@ -92,6 +91,8 @@ console.log(highscores);
 
 // creates the opening screen to start the quiz game
 var createStartQuizScreen = function(){
+    // makes sure the header is being displayed
+    headerEl.style.display = 'flex';
     // clears the content currently on the page
     pageContentEl.innerHTML = '';
     // creates a header for the title
@@ -220,9 +221,40 @@ var endQuiz = function(){
 };
 
 var createHighscoreScreen = function(){
-    headerToggle();
+    headerEl.style.display = 'none';
+    clearInterval(startCountdown);
     pageContentEl.innerHTML = '';
-
+    var headingEl = createElement('h2','High scores','highscore-header');
+    pageContentEl.appendChild(headingEl);
+    var unorderedEl,liEl,spanEl,pEl;
+    if(highscores.length > 0){
+        unorderedEl = createElement('ul',false,'highscore-list');
+        liEl = createElement('li','Initials');
+        spanEl = createElement('span','Score');
+        liEl.appendChild(spanEl);
+        unorderedEl.appendChild(liEl);
+        for(var i = 0; i < highscores.length; i++){
+            liEl = createElement('li',(i+1) + ". " + highscores[i].initials);
+            spanEl = createElement('span',highscores[i].score);
+            liEl.appendChild(spanEl);
+            unorderedEl.appendChild(liEl);
+        }
+        pageContentEl.appendChild(unorderedEl); 
+    } else {
+        pEl = createElement('p','There are currently no highscores.');
+        pageContentEl.appendChild(pEl);
+    }
+    var divEl = createElement('div',false,'highscore-buttons');
+    var buttonEl = createElement('button','Back','back-button');
+    buttonEl.addEventListener('click',createStartQuizScreen);
+    divEl.appendChild(buttonEl);
+    buttonEl = createElement('button','Clear Highscores','clear-highscores');
+    buttonEl.addEventListener('click',function(){
+        highscores = [];
+        createHighscoreScreen();
+    });
+    divEl.appendChild(buttonEl);
+    pageContentEl.appendChild(divEl);
 };
 
 var saveHighscores = function(){
@@ -238,14 +270,7 @@ var loadHighscores = function(){
     }
 };
 
-var headerToggle = function(){
-    if(headerEl.style.display === "flex"){
-        headerEl.style.display = 'none';
-    } else {
-        headerEl.style.display = 'flex';
-    }
-};
-
 document.querySelector('#highscore-button').addEventListener("click",createHighscoreScreen);
 
-createStartQuizScreen();
+//createStartQuizScreen();
+// createHighscoreScreen();

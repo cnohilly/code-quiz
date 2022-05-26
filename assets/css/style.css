@@ -22,7 +22,7 @@ body {
     flex-direction: column;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     align-items: center;
-    width: fit-content;
+    /* width: fit-content; */
     margin: 0 auto;
 }
 
@@ -136,6 +136,14 @@ footer p {
     list-style: none;
     border: 2px solid black;
     padding: 0;
+    font-size: 2.5rem;
+}
+#highscore-list li span {
+    float:right;
+}
+#highscore-list li:first-child {
+    font-weight: bold;
+    font-size: 3rem;
 }
 #highscore-list li:nth-child(odd){
     background-color:#00eeff;
@@ -145,6 +153,14 @@ footer p {
     background-color:#00aaff;
 }
 
+#highscore-buttons {
+    text-align: center;
+}
+
+#highscore-buttons button {
+    margin: 5px;
+}
+
 @media screen and (max-width: 768px) {
 
     button {
@@ -152,7 +168,7 @@ footer p {
     }
 
     main {
-        width: auto;
+        /* width: auto; */
         margin: 20px;
     }
     main h2 {
@@ -171,6 +187,15 @@ footer p {
     }
     #quiz-end span, #quiz-end input {
         width: 45%;
+    }
+  
+  }
+
+  @media screen and (max-width: 425px) {
+
+    #highscore-buttons button {
+        width: 100%;
+        margin: 5px 0;
     }
   
   }
