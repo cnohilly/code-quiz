@@ -160,7 +160,6 @@ var answerHandler = function(event){
 var footerTimeout;
 // Called when selecting an answer
 var answerQuestion = function (event) {
-    console.log(event.target);
     if (event.target.matches('button.answer-button')) {
         var result = "";
         var answerId = event.target.getAttribute("data-answer-id");
