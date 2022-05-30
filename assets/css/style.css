@@ -88,17 +88,17 @@ button {
   }
 
 /* Answers Styling */
-#answers-list {
+#choices-list {
     list-style: none;
     display: flex;
     flex-direction: column;
     width: fit-content;
     margin-left: 50px;
 }
-#answers-list li {
+#choices-list li {
     padding: 5px;
 }
-#answers-list button {
+#choices-list button {
     text-align: left;
     width: 100%;
 }

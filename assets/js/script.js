@@ -9,20 +9,24 @@ var highscores = [];    // highscores array to store all of the highscores
 var currentQuestion = 0;    // current question that the user is on
 var jsQuestions = [];       // array to hold the questions for the quiz
 // function to simplify adding questions to the array
-var addNewQuestion = function (jsQuestion, answersArr, answerNum) {
-    jsQuestions.push({
-        question: jsQuestion,
-        answers: answersArr,
-        answerId: answerNum
-    });
+var addNewQuestion = function(jsQuestion,choicesArr,answerIndex){
+   jsQuestions.push({
+       question: jsQuestion,
+       choices: choicesArr,
+       answerId: answerIndex
+   });
 };
-addNewQuestion("Commonly used data types DO NOT include:", ["strings", "booleans", "alerts", "numbers"], 2);
-addNewQuestion("The condition in an if / else statement is enclosed with _____.", ["quotes", "curly brackets", "parentheses", "square brackets"], 2);
-addNewQuestion("Arrays in JavaScript can be used to store _____.", ["numbers and strings", "other arrays", "booleans", "all of the above"], 3);
-addNewQuestion("A very useful tool used during development and debugging for printing content to the debugger is:", ["JavaScript", "terminal/bash", "for loops", "console.log"], 3);
+// Questions taken from the example provided for the challenge
+addNewQuestion("Commonly used data types DO NOT include:",["strings","booleans","alerts","numbers"],2);
+addNewQuestion("The condition in an if / else statement is enclosed with _____.",["quotes","curly brackets","parenthesis","square brackets"],2);
+addNewQuestion("Arrays in JavaScript can be used to store _____.",["numbers and strings","other arrays","booleans","all of the above"],3);
+addNewQuestion("A very useful tool used during development and debugging for printing content to the debugger is:",["JavaScript","terminal/bash","for loops","console.log"],3);
+addNewQuestion("String values must be enclosed within ___ when being assigned to variables.",["commas","curly brackets","quotes","parentheses"],2);
+
 
 // function to add a new highscore to the array
-var newHighscore = function (name, points) {
+var newHighscore = function(name,points){
+    // highscore object to store in the array
     var highscore = {
         initials: name,
         score: points
@@ -33,9 +37,9 @@ var newHighscore = function (name, points) {
 }
 
 // function to sort the highscores by highest score
-var sortHighscores = function () {
+var sortHighscores = function(){
     // Will not attempt to sort if there is only one score in the array
-    if (highscores.length < 1) {
+    if (highscores.length < 1){
         return false;
     }
     var temp;   // temp variable to hold value while reassigning
@@ -53,8 +57,8 @@ var sortHighscores = function () {
 }
 
 // function to create an element and assign the desired information
-// uses string for type and id and an array for classes and attributes
-var createElement = function (elementType, elementText, elementId, elementClasses, elementAttributes) {
+// uses string for 'type',text content and 'id' and an array for 'classes' and 'attributes'
+var createElement = function(elementType,elementText,elementId,elementClasses,elementAttributes){
     //creates the new element using the provided type
     var newElement = document.createElement(elementType);
     // if text is passed through it will be assigned to the element
@@ -66,14 +70,14 @@ var createElement = function (elementType, elementText, elementId, elementClasse
         newElement.setAttribute('id', elementId);
     }
     // if an array of classes is provided, will add the classes to the element
-    if (elementClasses && typeof elementClasses === 'object') {
-        for (var i = 0; i < elementClasses.length; i++) {
+    if (typeof elementClasses === 'object'){
+        for(var i = 0; i < elementClasses.length; i++){
             newElement.className += " " + elementClasses[i];
         }
     }
     // if an array of attributes is provided, will add attributes to the element
-    if (elementAttributes && typeof elementAttributes === 'object') {
-        for (var i = 0; i < elementAttributes.length - 1; i += 2) {
+    if (typeof elementAttributes === 'object'){
+        for(var i = 0; i < elementAttributes.length - 1; i+=2){
             // the first index is the attribute name, the second is the attribute value
             newElement.setAttribute(elementAttributes[i], elementAttributes[i + 1]);
         }
@@ -107,14 +111,23 @@ var createStartQuizScreen = function () {
 };
 
 // continues to the next question for the quiz. if that was the last question, the timer stops and the quiz ends
-var nextQuestion = function () {
-    if (currentQuestion < jsQuestions.length) {
+var nextQuestion = function(){
+    if (currentQuestion < jsQuestions.length){
+        // changes the heading to the new question
         document.querySelector('#question-heading').textContent = jsQuestions[currentQuestion].question;
-        for (var i = 0; i < 4; i++) {
-            document.querySelector("button[data-answer-id='" + i + "']").textContent = (i + 1) + ". " + jsQuestions[currentQuestion].answers[i];
+        // gets the unordered list to append choices to
+        var choicesList = document.querySelector('#choices-list');
+        // empties out the previous choices
+        choicesList.innerHTML = '';
+        var liEl, buttonEl;
+        // loops through the choices for the current question and creates and appends the buttons
+        for(var i = 0; i < jsQuestions[currentQuestion].choices.length; i++){
+            liEl = createElement('li');
+            buttonEl = createElement('button',(i+1) + ". " + jsQuestions[currentQuestion].choices[i],false,['answer-button'],['data-answer-id',i]);
+            liEl.appendChild(buttonEl);
+            choicesList.appendChild(liEl);
         }
     } else {
-        clearInterval(startCountdown);
         endQuiz();
     }
 };
@@ -131,47 +144,49 @@ var startQuiz = function () {
     pageContentEl.appendChild(headingEl);
 
     // creates an unordered list element and several list item elements with buttons for the question answers
-    var answersEl = createElement('ul', false, 'answers-list');
-    var answerListEl, buttonEl;
-    for (var i = 0; i < 4; i++) {
-        answerListEl = createElement('li');
-        buttonEl = createElement('button', false, false, false, ['data-answer-id', i]);
-        buttonEl.addEventListener('click', answerQuestion);
-        answerListEl.appendChild(buttonEl);
-        answersEl.appendChild(answerListEl);
-    }
-    pageContentEl.appendChild(answersEl);
+    var choicesEl = createElement('ul',false,'choices-list');
+    choicesEl.addEventListener('click',answerQuestion);
+    pageContentEl.appendChild(choicesEl);
     nextQuestion();
+};
+
+var answerHandler = function(event){
+    if (event.target.matches('button.answer-button')){
+
+    }
 };
 
 // Declaring footerTimeout to be used within the answerQuestion function
 var footerTimeout;
 // Called when selecting an answer
 var answerQuestion = function (event) {
-    var result = "";
-    var answerId = event.target.getAttribute("data-answer-id");
-    if (answerId != jsQuestions[currentQuestion].answerId) {
-        result = "Wrong!";
-        wrongAnswer();
-    } else {
-        result = "Correct!";
+    console.log(event.target);
+    if (event.target.matches('button.answer-button')) {
+        var result = "";
+        var answerId = event.target.getAttribute("data-answer-id");
+        if (answerId != jsQuestions[currentQuestion].answerId) {
+            result = "Wrong!";
+            // decreases the timer by 10 or to 0
+            gameTimer = Math.max(gameTimer - 10,0);
+            timeEl.textContent = gameTimer;
+        } else {
+            result = "Correct!";
+        }
+        document.querySelector('#question-result').textContent = result;
+        footerEl.style.display = 'block';
+        clearTimeout(footerTimeout);
+        footerTimeout = setTimeout(function () {
+            footerEl.style.display = "none";
+        }, 2000);
+        // If timer is greater than 0, will proceed to next question
+        if (gameTimer > 0){
+            currentQuestion++;
+            nextQuestion();
+        } else { // else the quiz will end
+            endQuiz();
+        }
+        
     }
-    document.querySelector('#question-result').textContent = result;
-    footerEl.style.display = 'block';
-    clearTimeout(footerTimeout);
-    footerTimeout = setTimeout(function () {
-        footerEl.style.display = "none";
-    }, 2000);
-    currentQuestion++;
-    nextQuestion();
-};
-
-var wrongAnswer = function () {
-    gameTimer = gameTimer - 10;
-    if (gameTimer <= 0) {
-        gameTimer = 0;
-    }
-    timeEl.textContent = gameTimer;
 };
 
 // timer function - startCountdown needs to be global so other
@@ -184,14 +199,16 @@ var startTimer = function () {
         if (gameTimer > 0) {
             gameTimer--;
             timeEl.textContent = gameTimer;
-        } else {
-            clearInterval(startCountdown);
+         } 
+         if (gameTimer <= 0) {
+            endQuiz();
         }
     }
     startCountdown = setInterval(countdown, 1000);
 };
 
-var endQuiz = function () {
+var endQuiz = function(){
+    clearInterval(startCountdown);
     pageContentEl.innerHTML = '';
     var headingEl = createElement('h2', "All done!", 'quiz-end-heading');
     pageContentEl.appendChild(headingEl);
