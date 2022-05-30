@@ -242,8 +242,13 @@ var endQuiz = function(){
 var submitScore = function (event) {
     event.preventDefault();
     var playerInitials = document.querySelector("input[name='initials']").value;
-    newHighscore(playerInitials, gameTimer);
-    createHighscoreScreen();
+    if (playerInitials != '' && playerInitials != null){
+        newHighscore(playerInitials, gameTimer);
+        createHighscoreScreen();
+    } else { // asks that the user enters something
+        alert("Please enter your initials.");
+    }
+    
 };
 
 var createHighscoreScreen = function () {

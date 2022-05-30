@@ -2,7 +2,7 @@
 
 ## Description
 
-As you proceed in your career as a web developer, you will probably be asked to complete a coding assessment, which is typically a combination of multiple-choice questions and interactive challenges. For this challenge, you will build a timed code quiz that's made up of multiple-choice questions. This app will run in the browser and feature dynamically updated HTML and CSS powered by your JavaScript code. It will also feature a clean and polished user interface and be responsive, ensuring that it adapts to multiple screen sizes.
+In this project I had to create a quiz game from scratch. The HTML and CSS is fairly basic as most of the page will be dynamically generated with JavaScript. The appearance is basic but is meant to still be responsive for all screen sizes. The project is built to be a game that cycles through a series of questions within a time limit and your score is the time at the end. Wrong answers subtract 10 seconds and reaching 0 seconds will end the game. The highscores are saved to local storage and can be displayed when returning to the game. 
 
 ## User Story
 
@@ -28,17 +28,14 @@ WHEN the game is over
 THEN I can save my initials and score
 ```
 
-The following animation demonstrates the application functionality:
+The following is an example of the application:
 
-![Demonstration of the Coding Quiz Challenge.](./Assets/04-web-apis-homework-demo.gif)
+![Demonstration of the Coding Quiz Challenge.](./assets/images/04-web-apis-homework-demo.gif)
 
-### Review
+## Product
 
-You are required to submit the following for review:
+The launched application can be found [here](https://cnohilly.github.io/code-quiz/).
 
-* The URL of the functional, deployed application.
+Example of my completed project:
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
-
----
-© 2022 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+![Completed version of the code quiz](./assets/images/code-quiz-demonstration.gif)
