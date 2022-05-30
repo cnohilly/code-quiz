@@ -150,12 +150,6 @@ var startQuiz = function () {
     nextQuestion();
 };
 
-var answerHandler = function(event){
-    if (event.target.matches('button.answer-button')){
-
-    }
-};
-
 // Declaring footerTimeout to be used within the answerQuestion function
 var footerTimeout;
 // Called when selecting an answer
