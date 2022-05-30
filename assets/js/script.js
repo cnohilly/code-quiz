@@ -23,6 +23,24 @@ addNewQuestion("Arrays in JavaScript can be used to store _____.",["numbers and 
 addNewQuestion("A very useful tool used during development and debugging for printing content to the debugger is:",["JavaScript","terminal/bash","for loops","console.log"],3);
 addNewQuestion("String values must be enclosed within ___ when being assigned to variables.",["commas","curly brackets","quotes","parentheses"],2);
 
+// shuffle the questions for the quiz
+var shuffleQuestions = function(){
+    // the length of the questions array to use in the for loop
+    var length = jsQuestions.length;
+    // temp array to push values to
+    var tempArray = [];
+    // loops through as many times as questions as there are
+    for (var i = 0; i < length; i++){
+        // finds a random number from 0 to the last index of the array - uses jsQuestions.length instead of the length variable because we are removing an index each iteration
+        var randomIndex = Math.floor(Math.random() * jsQuestions.length);
+        // pushes the value at the index into our temp array
+        tempArray.push(jsQuestions[randomIndex]);
+        // splices the array to remove the specific index (question) that we've already added
+        jsQuestions.splice(randomIndex,1);
+    }
+    // sets the questions array to the shuffled temp array
+    jsQuestions = tempArray;
+}
 
 // function to add a new highscore to the array
 var newHighscore = function(name,points){
@@ -134,6 +152,8 @@ var nextQuestion = function(){
 
 // function to start the quiz, called when the start button is clicked on the main screen
 var startQuiz = function () {
+    // shuffles the questions
+    shuffleQuestions();
     // starts the timer for the game
     startTimer();
     currentQuestion = 0;
